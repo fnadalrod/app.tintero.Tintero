@@ -9,7 +9,9 @@
     "--share=ipc",
     "--socket=wayland",
     "--socket=fallback-x11",
+    "--socket=pulseaudio",
     "--device=dri",
+    "--talk-name=org.freedesktop.secrets",
     "--env=GDK_BACKEND=wayland,x11",
     "--env=WEBKIT_DISABLE_DMABUF_RENDERER=1",
     "--filesystem=xdg-documents",
@@ -170,6 +172,78 @@
       ]
     },
     {
+      "name": "libvosk",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm755 libvosk.so /app/lib/libvosk.so"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "only-arches": ["x86_64"],
+          "url": "https://github.com/alphacep/vosk-api/releases/download/v0.3.45/vosk-linux-x86_64-0.3.45.zip",
+          "sha256": "bbdc8ed85c43979f6443142889770ea95cbfbc56cffb5c5dcd73afa875c5fbb2",
+          "strip-components": 1
+        },
+        {
+          "type": "archive",
+          "only-arches": ["aarch64"],
+          "url": "https://github.com/alphacep/vosk-api/releases/download/v0.3.45/vosk-linux-aarch64-0.3.45.zip",
+          "sha256": "45e95d37755deb07568e79497d7feba8c03aee5a9e071df29961aa023fd94541",
+          "strip-components": 1
+        }
+      ]
+    },
+    {
+      "name": "pcaudiolib",
+      "buildsystem": "autotools",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/espeak-ng/pcaudiolib/archive/refs/tags/1.3.tar.gz",
+          "sha256": "86edb75048eec7fcd8d74f9568f051d50b4781982215095b96ba9c2c9c7c159b"
+        }
+      ]
+    },
+    {
+      "name": "espeak-ng",
+      "buildsystem": "autotools",
+      "config-opts": ["--disable-static", "--with-mbrola=no"],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/espeak-ng/espeak-ng/archive/refs/tags/1.52.0.tar.gz",
+          "sha256": "bb4338102ff3b49a81423da8a1a158b420124b055b60fa76cfb4b18677130a23"
+        }
+      ]
+    },
+    {
+      "name": "piper",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -dm755 /app/lib/piper",
+        "cp -a . /app/lib/piper/",
+        "install -dm755 /app/bin",
+        "ln -sf /app/lib/piper/piper /app/bin/piper"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "only-arches": ["x86_64"],
+          "url": "https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_linux_x86_64.tar.gz",
+          "sha256": "a50cb45f355b7af1f6d758c1b360717877ba0a398cc8cbe6d2a7a3a26e225992",
+          "strip-components": 1
+        },
+        {
+          "type": "archive",
+          "only-arches": ["aarch64"],
+          "url": "https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_linux_aarch64.tar.gz",
+          "sha256": "fea0fd2d87c54dbc7078d0f878289f404bd4d6eea6e7444a77835d1537ab88eb",
+          "strip-components": 1
+        }
+      ]
+    },
+    {
       "name": "tintero",
       "buildsystem": "simple",
       "build-commands": [
@@ -180,8 +254,8 @@
       "sources": [
         {
           "type": "file",
-          "url": "https://github.com/fnadalrod/Releases-Tintero/releases/download/0.9.19/Tintero.deb",
-          "sha256": "fba4ad97ea8f610d41115758f2e07f66eb7b955c8f0dac11d96fd11842cf137f",
+          "url": "https://github.com/fnadalrod/Releases-Tintero/releases/download/0.10.0/Tintero.deb",
+          "sha256": "11f2a84e09243eaba737b22711960a7c21c7817553e8114e995c4a8c7ab6cbff",
           "dest-filename": "Tintero.deb"
         }
       ]
